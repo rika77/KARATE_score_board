@@ -25,11 +25,11 @@ def count_time():
 	while not stop_flag and seconds.get() != 0:
 		# if seconds == 15:
 		# TODO: buzu
+		time.sleep(1)
 		tmp = seconds.get()
 		seconds.set(tmp-1)
 		minute.set(int((tmp-1)/60))
 		second.set((tmp-1)%60)
-		time.sleep(1)
 
 	# if seconds == 0:
 	# TODO: buzu
@@ -106,8 +106,6 @@ def key(event):
 			stop_flag = True
 			thread.join()
 			thread=None
-	else:
-		print(ord(event.char))
 
 is_initial = True
 stop_flag = False
@@ -117,7 +115,6 @@ root = Tk()
 variables = []
 for i in range(6):
 	variables.append(IntVar())
-# red_score = IntVar()
 seconds = IntVar()
 minute = IntVar()
 second = IntVar()

@@ -2,6 +2,10 @@
 
 With this, you no longer need to buy KARATE score board.
 
+# Tested Environment
+- macOS
+- python 3.7.2
+
 # Usage
 
 1. git clone
