@@ -36,27 +36,67 @@ def count_time():
 
 def key(event):
 	global variables
-	global sop_flag
+	global stop_flag
 	global thread
 
-	RED_PLUS_S = 'f'
-	RED_MINUS_S = 'v'
-	RED_PLUS_C1 = 'd'
-	RED_MINUS_C1 = 'c'
+	RED_PLUS_S = 'd'
+	RED_MINUS_S = 'c'
+	RED_PLUS_C1 = 'a'
+	RED_MINUS_C1 = 'z'
 	RED_PLUS_C2 = 's'
 	RED_MINUS_C2 = 'x'
 
-	BLUE_PLUS_S = 'j'
-	BLUE_MINUS_S = 'n'
+	BLUE_PLUS_S = 'h'
+	BLUE_MINUS_S = 'b'
 	BLUE_PLUS_C1 = 'k'
 	BLUE_MINUS_C1 = 'm'
-	BLUE_PLUS_C2 = 'l'
-	BLUE_MINUS_C2 = ','
+	BLUE_PLUS_C2 = 'j'
+	BLUE_MINUS_C2 = 'n'
 
+	# red
 	if event.char == RED_PLUS_S:
 		variables[0].set(variables[0].get()+1)
+	elif event.char == RED_MINUS_S:
+		tmp = variables[0].get()
+		if tmp == 0:
+			return
+		variables[0].set(tmp-1)
+	elif event.char == RED_PLUS_C1:
+		variables[1].set(variables[1].get()+1)
+	elif event.char == RED_MINUS_C1:
+		tmp = variables[1].get()
+		if tmp == 0:
+			return
+		variables[1].set(tmp-1)
+	elif event.char == RED_PLUS_C2:
+		variables[2].set(variables[2].get()+1)
+	elif event.char == RED_MINUS_C2:
+		tmp = variables[2].get()
+		if tmp == 0:
+			return
+		variables[2].set(tmp-1)
+	# blue
 	elif event.char == BLUE_PLUS_S:
 		variables[3].set(variables[3].get()+1)
+	elif event.char == BLUE_MINUS_S:
+		tmp = variables[3].get()
+		if tmp == 0:
+			return
+		variables[3].set(tmp-1)
+	elif event.char == BLUE_PLUS_C1:
+		variables[4].set(variables[4].get()+1)
+	elif event.char == BLUE_MINUS_C1:
+		tmp = variables[4].get()
+		if tmp == 0:
+			return
+		variables[4].set(tmp-1)
+	elif event.char == BLUE_PLUS_C2:
+		variables[5].set(variables[5].get()+1)
+	elif event.char == BLUE_MINUS_C2:
+		tmp = variables[5].get()
+		if tmp == 0:
+			return
+		variables[5].set(tmp-1)
 	elif event.char == " ":
 		if not thread:
 			thread = threading.Thread(target=count_time)
@@ -69,7 +109,6 @@ def key(event):
 	else:
 		print(ord(event.char))
 
-
 is_initial = True
 stop_flag = False
 thread = None
@@ -78,6 +117,7 @@ root = Tk()
 variables = []
 for i in range(6):
 	variables.append(IntVar())
+# red_score = IntVar()
 seconds = IntVar()
 minute = IntVar()
 second = IntVar()
@@ -113,6 +153,7 @@ leftframe.pack( side = LEFT )
 red_c1_frame = Frame(leftframe,highlightbackground="red", highlightcolor="red", highlightthickness=10)
 red_c1_frame.pack(side=LEFT, padx=1)
 Label(red_c1_frame, textvariable=variables[1], bg="black",fg="yellow",font=(u'MS ゴシック', CHAR_SIZE)).pack()
+Label()
 
 red_c2_frame = Frame(leftframe,highlightbackground="red", highlightcolor="red", highlightthickness=10)
 red_c2_frame.pack(padx=1)
