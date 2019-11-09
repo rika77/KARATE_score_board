@@ -17,4 +17,4 @@ With this, you no longer need to buy KARATE score board.
 - Make it available on web
 - New score board for team competetions
 
-![team](images/team.png "score board for team")
+![team](images/team_board.png "score board for team")
