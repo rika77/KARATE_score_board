@@ -100,7 +100,7 @@ def key(event):
 		if tmp == 0:
 			return
 		variables[5].set(tmp-1)
-	elif event.char == " ":
+	elif event.char == ' ':
 		if not thread:
 			thread = threading.Thread(target=count_time)
 			stop_flag = False
@@ -108,6 +108,8 @@ def key(event):
 		else:
 			stop_flag = True
 			thread=None
+	elif event.char == 'R':
+		reset()
 
 is_initial = True
 stop_flag = False
@@ -133,10 +135,7 @@ root.configure(bg="black")
 
 frame = Frame(root,bg="black")
 frame.focus_set()
-# reset button
-frame.bind("<Return>", reset)
 frame.bind("<Key>", key)
-
 
 frame.pack()
 
