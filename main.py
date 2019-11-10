@@ -55,7 +55,8 @@ def key(event):
 
 	# red
 	if event.char == RED_PLUS_S:
-		variables[0].set(variables[0].get()+1)
+		tmp = variables[0].get()
+		variables[0].set(tmp+1)
 	elif event.char == RED_MINUS_S:
 		tmp = variables[0].get()
 		if tmp == 0:
@@ -104,7 +105,6 @@ def key(event):
 			thread.start()
 		else:
 			stop_flag = True
-			thread.join()
 			thread=None
 
 is_initial = True
@@ -115,13 +115,15 @@ root = Tk()
 variables = []
 for i in range(6):
 	variables.append(IntVar())
+
 seconds = IntVar()
 minute = IntVar()
 second = IntVar()
 
+
 # TODO: Add a reset 
 if is_initial:
-	reset(90)
+	reset(10)
 	is_initial = False
 
 root.attributes("-fullscreen", True)
@@ -134,38 +136,55 @@ frame.bind("<Key>", key)
 frame.pack()
 
 CHAR_SIZE = 300
+S_CHAR_SIZE = 100
+SS_CHAR_SIZE = 70
 
 # TODO: Add a senshu
 red_score_frame = Frame(frame,highlightbackground="red", highlightcolor="red", highlightthickness=10)
-red_score_frame.pack(side=LEFT, padx=5)
+red_score_frame.pack(side=LEFT, padx=5, pady=3)
 Label(red_score_frame, textvariable=variables[0], bg="black",fg="yellow",font=(u'MS ゴシック', CHAR_SIZE), padx=200).pack()
 
 blue_score_frame = Frame(frame,highlightbackground="blue", highlightcolor="blue",highlightthickness=10)
-blue_score_frame.pack(padx=5)
+blue_score_frame.pack(padx=5, pady=3)
 Label(blue_score_frame, textvariable=variables[3], bg="black",fg="yellow",font=(u'MS ゴシック', CHAR_SIZE), padx=200).pack()
 
 leftframe = Frame(root, bg="black")
 leftframe.pack( side = LEFT )
 
+# grid 0,0
 red_c1_frame = Frame(leftframe,highlightbackground="red", highlightcolor="red", highlightthickness=10)
-red_c1_frame.pack(side=LEFT, padx=1)
+red_c1_frame.grid(row=0,column=0,padx=1)
 Label(red_c1_frame, textvariable=variables[1], bg="black",fg="yellow",font=(u'MS ゴシック', CHAR_SIZE)).pack()
-Label()
 
+# grid 1,0
+Label(leftframe, text="C-1", bg="black", fg="white", font=(u'MS ゴシック', SS_CHAR_SIZE)).grid(row=1, column=0)
+
+# grid 0,1
 red_c2_frame = Frame(leftframe,highlightbackground="red", highlightcolor="red", highlightthickness=10)
-red_c2_frame.pack(padx=1)
+red_c2_frame.grid(row=0, column=1, padx=1)
 Label(red_c2_frame, textvariable=variables[2], bg="black",fg="yellow",font=(u'MS ゴシック', CHAR_SIZE)).pack()
+
+# grid 1,1
+Label(leftframe, text="C-2",bg="black", fg="white", font=(u'MS ゴシック', SS_CHAR_SIZE)).grid(row=1, column=1)
 
 rightframe = Frame(root, bg="black")
 rightframe.pack( side = RIGHT )
 
+# grid 0,0
 blue_c1_frame = Frame(rightframe,highlightbackground="blue", highlightcolor="blue", highlightthickness=10)
-blue_c1_frame.pack(side=RIGHT, padx=1)
+blue_c1_frame.grid(row=0,column=0,padx=1)
 Label(blue_c1_frame, textvariable=variables[4], bg="black",fg="yellow",font=(u'MS ゴシック', CHAR_SIZE)).pack()
 
+# grid 1,0
+Label(rightframe, text="C-2", bg="black", fg="white", font=(u'MS ゴシック', SS_CHAR_SIZE)).grid(row=1, column=0)
+
+# grid 0,1
 blue_c2_frame = Frame(rightframe,highlightbackground="blue", highlightcolor="blue", highlightthickness=10)
-blue_c2_frame.pack(padx=1)
+blue_c2_frame.grid(row=0, column=1, padx=1)
 Label(blue_c2_frame, textvariable=variables[5], bg="black",fg="yellow",font=(u'MS ゴシック', CHAR_SIZE)).pack()
+
+# grid 1,1
+Label(rightframe, text="C-1",bg="black", fg="white", font=(u'MS ゴシック', SS_CHAR_SIZE)).grid(row=1, column=1)
 
 bottomframe = Frame(root, bg="black")
 bottomframe.pack( side = BOTTOM )
@@ -180,7 +199,7 @@ Label(timer_frame, textvariable=second, bg="black",fg="lime", font=(u'MS ゴシ�
 
 ss_frame = Frame(bottomframe)
 ss_frame.pack()
-Label(ss_frame, text="start-stop",bg="black", fg="white", font=(u'MS ゴシック', 100)).pack()
+Label(ss_frame, text="start-stop",bg="black", fg="white", font=(u'MS ゴシック', S_CHAR_SIZE)).pack()
 root.mainloop()
 
 stop_flag = True
