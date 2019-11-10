@@ -5,7 +5,8 @@ import threading
 import time
 
 # TODO: Support another match_time ex. python3 main.py -s=60
-def reset(match_time):
+def reset(event=None):
+	global match_time
 	for i in range(6):
 		variables[i].set(0)
 
@@ -14,6 +15,7 @@ def reset(match_time):
 	second.set(match_time%60)
 
 	stop_flag = False
+	thread = None
 
 def count_time():
 	global stop_flag
@@ -110,6 +112,7 @@ def key(event):
 is_initial = True
 stop_flag = False
 thread = None
+match_time = 90
 
 root = Tk()
 variables = []
@@ -121,9 +124,8 @@ minute = IntVar()
 second = IntVar()
 
 
-# TODO: Add a reset 
 if is_initial:
-	reset(10)
+	reset()
 	is_initial = False
 
 root.attributes("-fullscreen", True)
@@ -131,7 +133,10 @@ root.configure(bg="black")
 
 frame = Frame(root,bg="black")
 frame.focus_set()
+# reset button
+frame.bind("<Return>", reset)
 frame.bind("<Key>", key)
+
 
 frame.pack()
 
