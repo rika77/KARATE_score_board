@@ -6,6 +6,8 @@ With this, you no longer need to buy KARATE score board.
 - macOS
 - python 3.7.2
 
+![movie](iamges/board.gif "movie")
+
 ## Usage
 
 1. git clone
