@@ -41,6 +41,9 @@ def key(event):
 	global stop_flag
 	global thread
 
+	global start_canvas
+	global stop_canvas
+
 	RED_PLUS_S = 'd'
 	RED_MINUS_S = 'c'
 	RED_PLUS_C1 = 'a'
@@ -105,9 +108,13 @@ def key(event):
 			thread = threading.Thread(target=count_time)
 			stop_flag = False
 			thread.start()
+			start_canvas.grid(row=0, column=0)
+			stop_canvas.grid_forget()
 		else:
 			stop_flag = True
 			thread=None
+			stop_canvas.grid(row=0, column=2)
+			start_canvas.grid_forget()
 	elif event.char == 'R':
 		reset()
 
@@ -201,10 +208,21 @@ Label(timer_frame, textvariable=minute, bg="black",fg="lime", font=(u'MS ゴシ�
 Label(timer_frame, text=":", bg="black",fg="lime", font=(u'MS ゴシック', CHAR_SIZE-30)).pack(side=LEFT)
 Label(timer_frame, textvariable=second, bg="black",fg="lime", font=(u'MS ゴシック', CHAR_SIZE-30)).pack()
 
-ss_frame = Frame(bottomframe)
+# start/stop light
+ss_frame = Frame(bottomframe, bg="black")
 ss_frame.pack()
-Label(ss_frame, text="start-stop",bg="black", fg="white", font=(u'MS ゴシック', S_CHAR_SIZE)).pack()
+
+start_canvas = Canvas(ss_frame, width=60, height=80, bg="black", highlightthickness=0)
+start_canvas.create_oval(10, 30, 60, 80, fill="orange")
+
+Label(ss_frame, text="start-stop",bg="black", fg="white", font=(u'MS ゴシック', S_CHAR_SIZE)).grid(row=0, column=1)
+
+stop_canvas =Canvas(ss_frame, width=60, height=80, bg="black",highlightthickness=0)
+stop_canvas.grid(row=0, column=2)
+stop_canvas.create_oval(10, 30, 60, 80, fill="orange")
+
 root.mainloop()
+
 
 stop_flag = True
 thread.join()
