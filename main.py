@@ -11,7 +11,10 @@ def reset(event=None):
 
 	seconds.set(match_time)
 	minute.set(int(match_time/60))
-	second.set(match_time%60)
+	if match_time%60 < 10:
+		seconds.set("0"+str(match_time%60))
+	else:
+		second.set(str(match_time%60))
 
 	stop_flag = False
 
@@ -29,7 +32,10 @@ def count_time():
 
 		seconds.set(seconds.get()-1)
 		minute.set(int((seconds.get())/60))
-		second.set((seconds.get())%60)
+		if seconds.get()%60 < 10:
+			second.set("0"+str(seconds.get()%60))
+		else:
+			second.set(str(seconds.get()%60))
 		root.after(1000, count_time)
 	
 	# if seconds == 0:
@@ -136,7 +142,7 @@ for i in range(6):
 
 seconds = IntVar()
 minute = IntVar()
-second = IntVar()
+second = StringVar()
 
 if is_initial:
 	reset()
