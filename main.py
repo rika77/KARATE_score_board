@@ -116,12 +116,21 @@ def key(event):
 	elif event.char == 'R':
 		reset()
 
+
+######## MAIN #########
 is_initial = True
 stop_flag = True
 match_time = 90
 
 root = Tk()
 variables = []
+# variables are
+# 0: red score
+# 1: red c1
+# 2: red c2
+# 3: blue score
+# 4: blue c2
+# 5: blue c1
 for i in range(6):
 	variables.append(IntVar())
 
