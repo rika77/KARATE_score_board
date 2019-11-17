@@ -51,6 +51,9 @@ def key(event):
 	global root
 	global is_initial
 
+	global will_red_remove
+	global will_blue_remove
+
 	RED_PLUS_S = 'd'
 	RED_MINUS_S = 'c'
 	RED_PLUS_C1 = 'a'
@@ -64,6 +67,9 @@ def key(event):
 	BLUE_MINUS_C1 = 'm'
 	BLUE_PLUS_C2 = 'j'
 	BLUE_MINUS_C2 = 'n'
+
+	RED_SENSHU = 'q'
+	BLUE_SENSHU = 'o'
 
 	if event.char == RED_PLUS_S:
 		tmp = variables[0].get()
@@ -109,6 +115,18 @@ def key(event):
 		if tmp == 0:
 			return
 		variables[5].set(tmp-1)
+	elif event.char == RED_SENSHU:
+		if not will_red_remove:
+			red_senshu_canvas.create_oval(10, 10, 80, 80, fill="red")
+		else:
+			red_senshu_canvas.create_oval(10, 10, 80, 80, fill="black")
+		will_red_remove = not will_red_remove
+	elif event.char == BLUE_SENSHU:
+		if not will_blue_remove:
+			blue_senshu_canvas.create_oval(10, 10, 80, 80, fill="blue")
+		else:
+			blue_senshu_canvas.create_oval(10, 10, 80, 80, fill="black")
+		will_blue_remove = not will_blue_remove
 	elif event.char == ' ':
 		if stop_flag:
 			stop_flag = False
@@ -127,6 +145,8 @@ def key(event):
 is_initial = True
 stop_flag = True
 match_time = 90
+will_red_remove = False
+will_blue_remove = False
 
 root = Tk()
 variables = []
@@ -157,7 +177,7 @@ frame.bind("<Key>", key)
 
 frame.pack()
 
-CHAR_SIZE = 300
+CHAR_SIZE = 270
 S_CHAR_SIZE = 100
 SS_CHAR_SIZE = 70
 
@@ -210,9 +230,24 @@ Label(blue_c1_frame, textvariable=variables[5], bg="black",fg="yellow",font=(u'M
 ## String "C-1" at grid 1,1
 Label(rightframe, text="C-1",bg="black", fg="white", font=(u'MS ゴシック', SS_CHAR_SIZE)).grid(row=1, column=1)
 
-# Timer & Start-Stop light
+# Senshu & Timer & Start-Stop light
 bottomframe = Frame(root, bg="black")
 bottomframe.pack( side = BOTTOM )
+
+## Senshu
+senshu_frame = Frame(bottomframe, bg="black")
+senshu_frame.pack()
+
+red_senshu_canvas = Canvas(senshu_frame, width=100, height=80, bg="black", highlightthickness=0)
+red_senshu_canvas.grid(row=0, column=0)
+red_senshu_canvas.create_oval(10, 10, 90, 90, fill="black")
+
+Label(senshu_frame, text="先取",bg="black", fg="white", font=(u'MS ゴシック', S_CHAR_SIZE)).grid(row=0, column=1)
+
+blue_senshu_canvas =Canvas(senshu_frame, width=100, height=80, bg="black",highlightthickness=0)
+blue_senshu_canvas.grid(row=0, column=2)
+blue_senshu_canvas.create_oval(10, 10, 90, 90, fill="black")
+
 
 ## Timer
 timer_frame = Frame(bottomframe)
