@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 
 from tkinter import*
-import threading
 import time
 
 # TODO: Support another match_time ex. python3 main.py -s=60
@@ -15,7 +14,6 @@ def reset(event=None):
 	second.set(match_time%60)
 
 	stop_flag = False
-	thread = None
 
 def count_time():
 	global stop_flag
@@ -23,26 +21,29 @@ def count_time():
 	global seconds
 	global minute
 	global second
+	global root
 
-	while not stop_flag and seconds.get() != 0:
+	if not stop_flag and seconds.get() != 0:
 		# if seconds == 15:
 		# TODO: buzu
-		time.sleep(1)
-		tmp = seconds.get()
-		seconds.set(tmp-1)
-		minute.set(int((tmp-1)/60))
-		second.set((tmp-1)%60)
 
+		seconds.set(seconds.get()-1)
+		minute.set(int((seconds.get())/60))
+		second.set((seconds.get())%60)
+		root.after(1000, count_time)
+	
 	# if seconds == 0:
 	# TODO: buzu
 
 def key(event):
 	global variables
 	global stop_flag
-	global thread
 
 	global start_canvas
 	global stop_canvas
+
+	global root
+	global is_initial
 
 	RED_PLUS_S = 'd'
 	RED_MINUS_S = 'c'
@@ -58,7 +59,6 @@ def key(event):
 	BLUE_PLUS_C2 = 'j'
 	BLUE_MINUS_C2 = 'n'
 
-	# red
 	if event.char == RED_PLUS_S:
 		tmp = variables[0].get()
 		variables[0].set(tmp+1)
@@ -104,23 +104,13 @@ def key(event):
 			return
 		variables[5].set(tmp-1)
 	elif event.char == ' ':
-		if not thread:
-			thread = threading.Thread(target=count_time)
-			stop_flag = False
-			thread.start()
-			start_canvas.grid(row=0, column=0)
-			stop_canvas.grid_forget()
-		else:
-			stop_flag = True
-			thread=None
-			stop_canvas.grid(row=0, column=2)
-			start_canvas.grid_forget()
+		stop_flag = not stop_flag
+		root.after(500, count_time)
 	elif event.char == 'R':
 		reset()
 
 is_initial = True
-stop_flag = False
-thread = None
+stop_flag = True
 match_time = 90
 
 root = Tk()
@@ -131,7 +121,6 @@ for i in range(6):
 seconds = IntVar()
 minute = IntVar()
 second = IntVar()
-
 
 if is_initial:
 	reset()
@@ -159,48 +148,51 @@ blue_score_frame = Frame(frame,highlightbackground="blue", highlightcolor="blue"
 blue_score_frame.pack(padx=5, pady=3)
 Label(blue_score_frame, textvariable=variables[3], bg="black",fg="yellow",font=(u'MS ゴシック', CHAR_SIZE), padx=200).pack()
 
+# RED
 leftframe = Frame(root, bg="black")
 leftframe.pack( side = LEFT )
 
-# grid 0,0
+## RED C1 at grid 0,0
 red_c1_frame = Frame(leftframe,highlightbackground="red", highlightcolor="red", highlightthickness=10)
 red_c1_frame.grid(row=0,column=0,padx=1)
 Label(red_c1_frame, textvariable=variables[1], bg="black",fg="yellow",font=(u'MS ゴシック', CHAR_SIZE)).pack()
 
-# grid 1,0
+## String "C-1" at grid 1,0
 Label(leftframe, text="C-1", bg="black", fg="white", font=(u'MS ゴシック', SS_CHAR_SIZE)).grid(row=1, column=0)
 
-# grid 0,1
+## RED C2 at grid 0,1
 red_c2_frame = Frame(leftframe,highlightbackground="red", highlightcolor="red", highlightthickness=10)
 red_c2_frame.grid(row=0, column=1, padx=1)
 Label(red_c2_frame, textvariable=variables[2], bg="black",fg="yellow",font=(u'MS ゴシック', CHAR_SIZE)).pack()
 
-# grid 1,1
+## String "C-2" at grid 1,1
 Label(leftframe, text="C-2",bg="black", fg="white", font=(u'MS ゴシック', SS_CHAR_SIZE)).grid(row=1, column=1)
 
+# BLUE
 rightframe = Frame(root, bg="black")
 rightframe.pack( side = RIGHT )
 
-# grid 0,0
-blue_c1_frame = Frame(rightframe,highlightbackground="blue", highlightcolor="blue", highlightthickness=10)
-blue_c1_frame.grid(row=0,column=0,padx=1)
-Label(blue_c1_frame, textvariable=variables[4], bg="black",fg="yellow",font=(u'MS ゴシック', CHAR_SIZE)).pack()
+## BLUE C2 at grid 0,0
+blue_c2_frame = Frame(rightframe,highlightbackground="blue", highlightcolor="blue", highlightthickness=10)
+blue_c2_frame.grid(row=0,column=0,padx=1)
+Label(blue_c2_frame, textvariable=variables[4], bg="black",fg="yellow",font=(u'MS ゴシック', CHAR_SIZE)).pack()
 
-# grid 1,0
+## String "C-2" at grid 1,0
 Label(rightframe, text="C-2", bg="black", fg="white", font=(u'MS ゴシック', SS_CHAR_SIZE)).grid(row=1, column=0)
 
-# grid 0,1
-blue_c2_frame = Frame(rightframe,highlightbackground="blue", highlightcolor="blue", highlightthickness=10)
-blue_c2_frame.grid(row=0, column=1, padx=1)
-Label(blue_c2_frame, textvariable=variables[5], bg="black",fg="yellow",font=(u'MS ゴシック', CHAR_SIZE)).pack()
+## BLUE C1 at grid 0,1
+blue_c1_frame = Frame(rightframe,highlightbackground="blue", highlightcolor="blue", highlightthickness=10)
+blue_c1_frame.grid(row=0, column=1, padx=1)
+Label(blue_c1_frame, textvariable=variables[5], bg="black",fg="yellow",font=(u'MS ゴシック', CHAR_SIZE)).pack()
 
-# grid 1,1
+## String "C-1" at grid 1,1
 Label(rightframe, text="C-1",bg="black", fg="white", font=(u'MS ゴシック', SS_CHAR_SIZE)).grid(row=1, column=1)
 
+# Timer & Start-Stop light
 bottomframe = Frame(root, bg="black")
 bottomframe.pack( side = BOTTOM )
 
-# Timer
+## Timer
 timer_frame = Frame(bottomframe)
 timer_frame.pack()
 
@@ -208,7 +200,7 @@ Label(timer_frame, textvariable=minute, bg="black",fg="lime", font=(u'MS ゴシ�
 Label(timer_frame, text=":", bg="black",fg="lime", font=(u'MS ゴシック', CHAR_SIZE-30)).pack(side=LEFT)
 Label(timer_frame, textvariable=second, bg="black",fg="lime", font=(u'MS ゴシック', CHAR_SIZE-30)).pack()
 
-# start/stop light
+## start/stop light
 ss_frame = Frame(bottomframe, bg="black")
 ss_frame.pack()
 
@@ -222,7 +214,3 @@ stop_canvas.grid(row=0, column=2)
 stop_canvas.create_oval(10, 30, 60, 80, fill="orange")
 
 root.mainloop()
-
-
-stop_flag = True
-thread.join()
