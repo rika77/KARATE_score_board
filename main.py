@@ -104,7 +104,14 @@ def key(event):
 			return
 		variables[5].set(tmp-1)
 	elif event.char == ' ':
-		stop_flag = not stop_flag
+		if stop_flag:
+			stop_flag = False
+			start_canvas.create_oval(10, 30, 60, 80, fill="orange")
+			stop_canvas.create_oval(10, 30, 60, 80, fill="black")
+		else:
+			stop_flag = True
+			start_canvas.create_oval(10, 30, 60, 80, fill="black")
+			stop_canvas.create_oval(10, 30, 60, 80, fill="orange")
 		root.after(500, count_time)
 	elif event.char == 'R':
 		reset()
@@ -205,7 +212,8 @@ ss_frame = Frame(bottomframe, bg="black")
 ss_frame.pack()
 
 start_canvas = Canvas(ss_frame, width=60, height=80, bg="black", highlightthickness=0)
-start_canvas.create_oval(10, 30, 60, 80, fill="orange")
+start_canvas.grid(row=0, column=0)
+start_canvas.create_oval(10, 30, 60, 80, fill="black")
 
 Label(ss_frame, text="start-stop",bg="black", fg="white", font=(u'MS ゴシック', S_CHAR_SIZE)).grid(row=0, column=1)
 
