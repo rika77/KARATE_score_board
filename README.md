@@ -21,7 +21,6 @@ With this, you no longer need to buy KARATE score board.
 
 ## Future work
 
-- Add README.md in Japanese
 - Make it available on web
 - New score board for team competetions
 
